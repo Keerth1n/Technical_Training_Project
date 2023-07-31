@@ -18,7 +18,8 @@ Embraer E190-E2 reference airplane for seat configuration*/
 #define MAX_SEATS 100
 #define MAX_LENGTH 25
 
-struct Passenger {
+struct Passenger
+{
     char name[MAX_LENGTH];
     int age;
     char phone[MAX_LENGTH];
@@ -31,12 +32,16 @@ struct Passenger {
 
 struct Passenger seats[MAX_SEATS];
 
-void setSeatColor(int classType, bool reserved) {
-    if (reserved) {
+void setSeatColor(int classType, bool reserved)
+{
+    if (reserved)
+    {
         printf("\033[31m"); // Red color for reserved seats
     }
-    else {
-        switch (classType) {
+    else
+    {
+        switch (classType)
+        {
             case 1:
                     printf("\033[34m"); // Blue color for First Class
                     break;
@@ -52,18 +57,20 @@ void setSeatColor(int classType, bool reserved) {
     }
 }
 
-int getColumnSpacing(const char *data, int maxColumnWidth) {
-    int maxLength = maxColumnWidth; // Minimum column width
+int getColumnSpacing(const char *data, int maxColumnWidth)
+{
+    int maxLength = maxColumnWidth;
 
     int length = strlen(data);
     if (length > maxLength) {
         maxLength = length;
     }
 
-    return maxLength + 2; // Adding 2 for padding
+    return maxLength + 2;
 }
 
-void saveDataToFile() {
+void saveDataToFile()
+{
     FILE *file = fopen("seats_data.txt", "w");
 
     if (file != NULL) {
@@ -98,7 +105,8 @@ void saveDataToFile() {
 
         // Business Class data
         fprintf(file, "\nBusiness Class:\n");
-        for (int i = 10; i < 40; i++) {
+        for (int i = 10; i < 40; i++)
+        {
             int seatNumber = i;
             fprintf(file, "%-*d ", maxSeatNumberWidth, seatNumber + 1);
             fprintf(file, "%-*s ", maxNameWidth, seats[seatNumber].name);
@@ -111,7 +119,8 @@ void saveDataToFile() {
 
         // Economy Class data
         fprintf(file, "\nEconomy Class:\n");
-        for (int i = 40; i < MAX_SEATS; i++) {
+        for (int i = 40; i < MAX_SEATS; i++)
+        {
             int seatNumber = i;
             fprintf(file, "%-*d ", maxSeatNumberWidth, seatNumber + 1);
             fprintf(file, "%-*s ", maxNameWidth, seats[seatNumber].name);
@@ -123,13 +132,17 @@ void saveDataToFile() {
         }
 
         fclose(file);
-    } else {
+    }
+    else
+    {
         printf("Error saving data to file.\n");
     }
 }
 
-void initializeSeats() {
-    for (int i = 0; i < MAX_SEATS; i++) {
+void initializeSeats()
+{
+    for (int i = 0; i < MAX_SEATS; i++)
+    {
         seats[i].reserved = false;
         strcpy(seats[i].name, "");
         seats[i].age = 0;
@@ -140,11 +153,14 @@ void initializeSeats() {
     }
 }
 
-void loadDataFromFile() {
+void loadDataFromFile()
+{
     FILE *file = fopen("seats_data.txt", "r");
 
-    if (file != NULL) {
-        for (int i = 0; i < MAX_SEATS; i++) {
+    if (file != NULL)
+    {
+        for (int i = 0; i < MAX_SEATS; i++)
+        {
             int reservedStatus;
             fscanf(file, "%d %s %d %s %s %s %s\n", &reservedStatus, seats[i].name, &seats[i].age,
                    seats[i].phone, seats[i].departureCity, seats[i].arrivalCity, seats[i].journeyDate);
@@ -153,14 +169,16 @@ void loadDataFromFile() {
 
         fclose(file);
     }
-    else {
+    else
+    {
         printf("\nCreating a new file. Initializing with default values.\n");
         initializeSeats();
         saveDataToFile();
     }
 }
 
-void displayMenu() {
+void displayMenu()
+{
     printf("\nAirline Seat Reservation System\n");
     printf("-------------------------------\n");
     printf("1. Book tickets\n");
@@ -172,7 +190,8 @@ void displayMenu() {
     printf("7. Exit\n");
 }
 
-void bookTicket() {
+void bookTicket()
+{
     int seatNumber;
     int classChoice;
 
@@ -183,7 +202,8 @@ void bookTicket() {
     printf("Enter choice: ");
     scanf("%d", &classChoice);
 
-    if (classChoice < 1 || classChoice > 3) {
+    if (classChoice < 1 || classChoice > 3)
+    {
         printf("Invalid choice! Please try again.\n");
         return;
     }
@@ -191,12 +211,16 @@ void bookTicket() {
     printf("\t\t\tAvailable Seats\n");
     setSeatColor(1, false); // Available seats (reset color)
     printf("First Class:    ");
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 10; i++)
+    {
         int seatNumber = i;
         setSeatColor(1, seats[seatNumber].reserved);
-        if (seats[seatNumber].reserved) {
+        if (seats[seatNumber].reserved)
+        {
             printf(" X   "); // Reserved seat
-        } else {
+        }
+        else
+        {
             printf("%-4d ", seatNumber + 1); // Available seat number
         }
     }
@@ -204,15 +228,20 @@ void bookTicket() {
 
     setSeatColor(2, false);
     printf("Business Class: ");
-    for (int i = 10; i < 40; i++) {
+    for (int i = 10; i < 40; i++)
+    {
         int seatNumber = i;
         setSeatColor(2, seats[seatNumber].reserved);
-        if (seats[seatNumber].reserved) {
+        if (seats[seatNumber].reserved)
+        {
             printf(" X   "); // Reserved seat
-        } else {
+        }
+        else
+        {
             printf("%-4d ", seatNumber + 1); // Available seat number
         }
-        if (i == 19 || i == 29) {
+        if (i == 19 || i == 29)
+        {
             printf("\n                ");
         }
     }
@@ -220,16 +249,20 @@ void bookTicket() {
 
     setSeatColor(3, false);
     printf("Economy Class:  ");
-    for (int i = 40; i < 100; i++) {
+    for (int i = 40; i < 100; i++)
+    {
         int seatNumber = i;
         setSeatColor(3, seats[seatNumber].reserved);
-        if (seats[seatNumber].reserved) {
+        if (seats[seatNumber].reserved)
+        {
             printf(" X   "); // Reserved seat
         }
-        else {
+        else
+        {
             printf("%-4d ", seatNumber + 1); // Available seat number
         }
-        if (i == 49 || i == 59 || i == 69 || i == 79 || i == 89 || i == 99) {
+        if (i == 49 || i == 59 || i == 69 || i == 79 || i == 89 || i == 99)
+        {
             printf("\n                ");
         }
     }
@@ -242,7 +275,8 @@ void bookTicket() {
     scanf("%d", &seatNumber);
     seatNumber--;
 
-    if (seatNumber < 0 || seatNumber >= MAX_SEATS) {
+    if (seatNumber < 0 || seatNumber >= MAX_SEATS)
+    {
         printf("Invalid seat number! Please try again.\n");
         return;
     }
@@ -250,9 +284,11 @@ void bookTicket() {
     // Check if the selected seat number is within the valid range for the chosen class
     if ((classChoice == 1 && seatNumber >= 0 && seatNumber < 10) ||
         (classChoice == 2 && seatNumber >= 10 && seatNumber < 40) ||
-        (classChoice == 3 && seatNumber >= 40 && seatNumber < 100)) {
+        (classChoice == 3 && seatNumber >= 40 && seatNumber < 100))
+    {
 
-        if (seats[seatNumber].reserved) {
+        if (seats[seatNumber].reserved)
+        {
             printf("Seat %d is already reserved. Please choose another seat.\n", seatNumber + 1);
             return;
         }
@@ -282,24 +318,28 @@ void bookTicket() {
 
         saveDataToFile();
     }
-    else {
+    else
+    {
         printf("Invalid seat number for the selected class! Please try again.\n");
     }
 }
 
-void modifyTicket() {
+void modifyTicket()
+{
     int ticketId;
 
     printf("Enter the ticket ID to modify: ");
     scanf("%d", &ticketId);
     ticketId--;
 
-    if (ticketId < 0 || ticketId >= MAX_SEATS) {
+    if (ticketId < 0 || ticketId >= MAX_SEATS)
+    {
         printf("Invalid ticket ID! Please try again.\n");
         return;
     }
 
-    if (!seats[ticketId].reserved) {
+    if (!seats[ticketId].reserved)
+    {
         printf("Ticket ID %d is not reserved yet.\n", ticketId + 1);
         return;
     }
@@ -327,19 +367,22 @@ void modifyTicket() {
     saveDataToFile();
 }
 
-void viewBookedTicket() {
+void viewBookedTicket()
+{
     int ticketId;
 
     printf("Enter the ticket ID to view: ");
     scanf("%d", &ticketId);
     ticketId--;
 
-    if (ticketId < 0 || ticketId >= MAX_SEATS) {
+    if (ticketId < 0 || ticketId >= MAX_SEATS)
+    {
         printf("Invalid ticket ID! Please try again.\n");
         return;
     }
 
-    if (!seats[ticketId].reserved) {
+    if (!seats[ticketId].reserved)
+    {
         printf("Ticket ID %d is not reserved yet.\n", ticketId + 1);
         return;
     }
@@ -353,19 +396,22 @@ void viewBookedTicket() {
     printf("Journey Date: %s\n", seats[ticketId].journeyDate);
 }
 
-void modifyAirlineRecord() {
+void modifyAirlineRecord()
+{
     int ticketId;
 
     printf("Enter the ticket ID to modify: ");
     scanf("%d", &ticketId);
     ticketId--;
 
-    if (ticketId < 0 || ticketId >= MAX_SEATS) {
+    if (ticketId < 0 || ticketId >= MAX_SEATS)
+    {
         printf("Invalid ticket ID! Please try again.\n");
         return;
     }
 
-    if (!seats[ticketId].reserved) {
+    if (!seats[ticketId].reserved)
+    {
         printf("Ticket ID %d is not reserved yet.\n", ticketId + 1);
         return;
     }
@@ -381,7 +427,8 @@ void modifyAirlineRecord() {
     int modifyChoice;
     scanf("%d", &modifyChoice);
 
-    switch (modifyChoice) {
+    switch (modifyChoice)
+    {
         case 1:
                 printf("Enter new passenger name: ");
                 scanf(" %[^\n]s", seats[ticketId].name);
@@ -416,7 +463,8 @@ void modifyAirlineRecord() {
     saveDataToFile();
 }
 
-void checkAirlineStatus() {
+void checkAirlineStatus()
+{
     int totalFirstClassReservedSeats = 0;
     int totalFirstClassAvailableSeats = 0;
     int totalBusinessClassReservedSeats = 0;
@@ -427,13 +475,17 @@ void checkAirlineStatus() {
     printf("\t\t\tAvailable Seats\n");
     setSeatColor(1, false); // Available seats (reset color)
     printf("First Class:    ");
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 10; i++)
+    {
         int seatNumber = i;
         setSeatColor(1, seats[seatNumber].reserved);
-        if (seats[seatNumber].reserved) {
+        if (seats[seatNumber].reserved)
+        {
             printf(" X   "); // Reserved seat
             totalFirstClassReservedSeats++;
-        } else {
+        }
+        else
+        {
             printf("%-4d ", seatNumber + 1); // Available seat number
             totalFirstClassAvailableSeats++;
         }
@@ -442,18 +494,22 @@ void checkAirlineStatus() {
 
     setSeatColor(2, false);
     printf("Business Class: ");
-    for (int i = 10; i < 40; i++) {
+    for (int i = 10; i < 40; i++)
+    {
         int seatNumber = i;
         setSeatColor(2, seats[seatNumber].reserved);
-        if (seats[seatNumber].reserved) {
+        if (seats[seatNumber].reserved)
+        {
             printf(" X   "); // Reserved seat
             totalBusinessClassReservedSeats++;
         }
-        else {
+        else
+        {
             printf("%-4d ", seatNumber + 1); // Available seat number
             totalBusinessClassAvailableSeats++;
         }
-        if (i == 19 || i == 29) {
+        if (i == 19 || i == 29)
+        {
             printf("\n                ");
         }
     }
@@ -461,18 +517,22 @@ void checkAirlineStatus() {
 
     setSeatColor(3, false);
     printf("Economy Class:  ");
-    for (int i = 40; i < 100; i++) {
+    for (int i = 40; i < 100; i++)
+    {
         int seatNumber = i;
         setSeatColor(3, seats[seatNumber].reserved);
-        if (seats[seatNumber].reserved) {
+        if (seats[seatNumber].reserved)
+        {
             printf(" X   "); // Reserved seat
             totalEconomyClassReservedSeats++;
         }
-        else {
+        else
+        {
             printf("%-4d ", seatNumber + 1); // Available seat number
             totalEconomyClassAvailableSeats++;
         }
-        if (i == 49 || i == 59 || i == 69 || i == 79 || i == 89 || i == 99) {
+        if (i == 49 || i == 59 || i == 69 || i == 79 || i == 89 || i == 99)
+        {
             printf("\n                ");
         }
     }
@@ -487,19 +547,22 @@ void checkAirlineStatus() {
     printf("Economy Class - Reserved Seats: %d, Available Seats: %d\n", totalEconomyClassReservedSeats, totalEconomyClassAvailableSeats);
 }
 
-void cancelTicket() {
+void cancelTicket()
+{
     int ticketId;
 
     printf("Enter the ticket ID to cancel: ");
     scanf("%d", &ticketId);
     ticketId--;
 
-    if (ticketId < 0 || ticketId >= MAX_SEATS) {
+    if (ticketId < 0 || ticketId >= MAX_SEATS)
+    {
         printf("Invalid ticket ID! Please try again.\n");
         return;
     }
 
-    if (!seats[ticketId].reserved) {
+    if (!seats[ticketId].reserved)
+    {
         printf("Ticket ID %d is not reserved yet.\n", ticketId + 1);
         return;
     }
@@ -518,17 +581,20 @@ void cancelTicket() {
     saveDataToFile();
 }
 
-int main() {
+int main()
+{
     int choice;
 
     loadDataFromFile();
 
-    do {
+    do
+    {
         displayMenu();
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
-        switch (choice) {
+        switch (choice)
+        {
             case 1:
                     bookTicket();
                     break;
